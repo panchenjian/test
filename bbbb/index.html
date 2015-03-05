@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="www.frebsite.nl" />
+<meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+<title>jquery.mmenu插件 左侧抽屉 </title>
+<link type="text/css" rel="stylesheet" href="css/bootstrap-combined.min.css" title="为了图标而已，可有可无"/>
+<link type="text/css" rel="stylesheet" href="css/layout.css" />
+<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css" />
+<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.widescreen.css" media="all and (min-width: 900px)" />
+<link type="text/css" rel="stylesheet" href="css/iconbar.css" media="all and (min-width: 500px) and (max-width: 899px)" />
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.mmenu.min.all.js"></script>
+<script type="text/javascript">
+			$(function() {
+				var $menu = $('#menu');
+
+				//	Toggle menu 
+				$('#open-icon-menu a').click(function( e ) {
+					e.stopImmediatePropagation();
+					e.preventDefault();
+					$menu.trigger( $menu.hasClass( 'mm-opened' ) ? 'close.mm' : 'open.mm' );					
+				});
+
+				//	Create the menu
+				$menu.mmenu({
+					onClick: {
+						preventDefault	: true,
+						setSelected		: false
+					}
+				});
+
+				//	Click an anchor, scroll to section
+				$menu.find( 'a' ).on( 'click',function(){
+					var href = $(this).attr( 'href' );
+					if ( $menu.hasClass( 'mm-opened' ) )
+					{
+						$menu.off( 'closed.mm' ).one( 'closed.mm',function(){
+									setTimeout(
+										function()
+										{
+											$('html, body').animate({
+												scrollTop: $( href ).offset().top
+											});
+										}, 10
+									);
+								}
+							);
+					}
+					else
+					{
+						$('html, body').animate({
+							scrollTop: $( href ).offset().top
+						});
+					}
+				}
+			);
+			});
+		</script>
+</head>
+<body>
+<div id="page"> <a id="open-icon-header" href="#menu"></a>
+  <section id="home">
+    <div>
+      <h1>Here it is!</h1>
+      <p>The coolest responsive menu example you'll ever see, ever.</p>
+    </div>
+  </section>
+  <section id="iconbar">
+    <div>
+      <h2>Iconbar</h2>
+      <p>It uses icons from Twitter Bootstrap.</p>
+    </div>
+  </section>
+  <section id="styling">
+    <div>
+      <h2>Styling</h2>
+      <p>Its background is very dark and the menu items are really big and have no borders, making it a very clean design.</p>
+    </div>
+  </section>
+  <section id="responsive">
+    <div>
+      <h2>Responsive</h2>
+      <p>It is responsive, try resizing your browser.</p>
+    </div>
+  </section>
+  <section id="scrolling">
+    <div>
+      <h2>Scrolling</h2>
+      <p>It scrolls to the clicked section, but only after the menu closed.</p>
+    </div>
+  </section>
+  <section id="about">
+    <div>
+      <h2>About</h2>
+      <p>This page was made using jQuery and the <a href="http://mmenu.frebsite.nl">jQuery.mmenu plugin</a>.</p>
+    </div>
+  </section>
+  <nav id="menu">
+    <ul>
+      <li id="open-icon-menu"><a href="#"> <i class="icon icon-white icon-th-list"></i></a></li>
+      <li><a href="#home"> <i class="icon icon-white icon-home"></i> Home</a></li>
+      <li><a href="#iconbar"> <i class="icon icon-white icon-th"></i> Iconbar</a></li>
+      <li><a href="#styling"> <i class="icon icon-white icon-bold"></i> Styling</a></li>
+      <li><a href="#responsive"> <i class="icon icon-white icon-resize-horizontal"></i> Responsive</a></li>
+      <li><a href="#scrolling"> <i class="icon icon-white icon-arrow-down"></i> Scrolling</a></li>
+      <li><a href="#about"> <i class="icon icon-white icon-cog"></i> About</a></li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>
