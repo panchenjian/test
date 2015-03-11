@@ -1,0 +1,263 @@
+.address_li{
+		border:1px solid #dfe5e9 !important;
+		width:32%;min-height:210px;
+		padding:30px 10px 20px 20px;margin:15px 10px 0 0;
+		float:left;cursor: pointer;
+	}
+	.address_li:hover{
+		background: #f8f8f8;
+		border-color: #5b92fa !important;
+	}
+	.address_li .address{height:54px;line-height: 18px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 3;-webkit-box-orient: vertical;}
+    .address_li .edit-buttons{padding-right: 10px;margin-top: 12px;}
+	.v_midd{
+		text-align: center;color:#7a7a7a;font-size: 19px;font-family: Microsoft Yahei;
+	}
+	.v_midd .addrIcon{font-size: 80px;display: block;}
+	.pay_li{padding:30px 10px 30px 20px;float: left;}
+	.pay_li .col{height:45px;}
+	.pay_li .col img{height:44px;vertical-align: middle;margin-left: 20px;}
+	.pay_li .col p{display: inline-block;margin-left: 20px;color: #2d2d2d;font-size: 18px;}
+	.invoice{clear: both;}
+
+	#checkoutGoodsList .checkout-goods-list {
+margin-bottom: 30px;
+overflow: hidden;
+}
+.checkout-goods-list dt {
+padding: 9px 0;
+font-size: 12px;
+line-height: 1;
+background: #fafafa;
+color: #8c8c8c;
+}
+.clearfix:before, .clearfix:after {
+display: table;
+content: "";
+line-height: 0;
+}
+.checkout-goods-list dt .col-1 {
+width: 50%;
+padding-left: 20px;
+}
+.checkout-goods-list .col-2 {
+width: 20%;
+}
+.checkout-goods-list .col-3 {
+width: 10%;
+}
+.checkout-goods-list .col-4 {
+width: 20%;
+padding-right: 30px;
+text-align: right;
+}
+.checkout-goods-list .item {
+display: table;width:100%;
+padding: 10px 0;margin:0;
+color: #333;border-bottom: 1px solid #dfdfdf;
+}
+.checkout-goods-list .item .item-row {
+display: table-row;
+}
+.checkout-goods-list .item .col {
+display: table-cell;float:none;
+vertical-align: middle;
+}
+.checkout-goods-list .item .col-1 {
+width: 50%;
+padding-left: 20px;
+}
+.checkout-goods-list .item .col-1 .g-pic {
+width: 40px;
+height: 40px;
+padding-right: 10px;
+}
+.checkout-goods-list .item .col-1 .g-info, .checkout-goods-list .item .col-1 .g-pic {
+display: table-cell;
+vertical-align: middle;
+}
+.checkout-goods-list .item .col-1 .g-info a {
+color: #333;
+}
+.checkout-count {
+position: relative;
+padding: 25px 30px 25px 0;
+min-height: 160px;
+_height: 160px;
+border-radius: 0 0 5px 5px;
+}
+.checkout-price {
+text-align: right;
+color: #333;
+}
+.checkout-price ul {
+margin-bottom: 20px;list-style-type: none;
+}
+.checkout-price li {
+line-height: 2;text-align: right;
+}
+.checkout-price li span {
+display: inline-block;
+/*min-width: 130px;
+_width: 150px;*/
+color: #ff4a00;
+}
+.checkout-price .checkout-total span {
+display: inline-block;
+min-width: 130px;
+_width: 150px;
+color: #ff4a00;
+}
+.checkout-price .checkout-total span strong {
+margin-right: 5px;
+font-size: 30px;
+font-weight: normal;
+white-space: nowrap;
+}
+.checkout-confirm {
+padding: 20px 30px;margin-bottom: 30px;
+background: #fafafa;
+text-align: right;
+color: #333;
+}
+.btn {
+display: inline-block;margin-bottom: 0;padding: 0;
+font-size: 14px;border-radius: 5px;
+height: 38px;line-height: 38px;width: 148px;
+text-align: center;cursor: pointer;
+background-color: #fff;
+border: 1px solid #ff4a00;
+color: #6a7375;
+}
+.checkout-confirm .btn-back-cart {
+border-color: #dfdfdf;
+}
+.checkout-confirm .btn-primary {
+margin-left: 5px;
+background-color: #5b92fa;
+border-color: #5b92fa;
+color: #fff;
+}
+
+.item select {
+margin-bottom: 8px;padding: 8px;
+}
+.item .select-1,.item .select-2 {
+width: 47%;margin-right: 2%;
+}
+.item .select-3 {
+width: 100%;
+}
+.item .input-area {
+height: 80px;width:100%;
+line-height: 20px;
+padding: 5px 10px;resize: none;
+}
+.item .text-short{width:28%;padding: 8px;border: 2px solid #dfe5e9;-webkit-border-radius: 4px 4px;-moz-border-radius: 4px / 4px;border-radius: 4px / 4px;background: #fff;}
+.required{position: relative;}
+.required:before{position: absolute;left:-15px;content: '*';color:red;}
+@media screen and (min-width: 960px){
+	.p-desktop-only{
+		display: block;
+	}
+	.p-mobile-only{
+		display: none;
+	}
+}
+@media screen and (max-width: 959px){
+	.p-desktop-only{
+		display: none;
+	}
+	.p-mobile-only{
+		display: block;
+	}
+	.address_li{
+		width:100%;margin:0;border: none !important;
+	}
+	.address_li .sub_span_7{
+		width:77%;
+	}
+	.addr_mob{border:1px solid #dfe5e9;padding:11px 20px;background: #fbfbfb;color:#999;}
+	.addr_mob .addrIcon{font-size: 40px;float: left;line-height: 14px;margin-right: 10px;}
+	.checkout-price ,.checkout-price li,.checkout-confirm{text-align: center;}
+	.showGoods{width:74% !important;}
+}
+/*订单管理样式*/
+.uc-order-list-box {
+margin: 20px 0;
+border: 1px solid #dfdfdf;
+border-bottom: none;
+}
+.uc-order-detail-list {
+margin: 0;
+padding: 0;
+list-style-type: none;
+}
+.uc-order-detail-item .order-detail-table {
+width: 100%;
+color: #333;
+}
+.uc-order-detail-item .order-detail-table .column-price {
+width: 119px;font-size: 18px;
+padding: 30px 0 20px;
+text-align: center;
+vertical-align: middle;
+}
+.uc-order-detail-item .order-detail-table th, .uc-order-detail-item .order-detail-table td {
+padding: 0;
+border: 1px solid #dfdfdf;
+}
+.uc-order-detail-item .order-detail-table .column-info {
+height: 41px;
+font-weight: 400;
+text-align: left;
+background: #fafafa;
+}
+.uc-order-detail-item .order-detail-table .column-t {
+border-width: 0 0 1px;
+}
+.uc-order-detail-item .order-detail-table .order-goods-list li.first {
+border-top: 0;
+}
+.uc-order-detail-item .order-detail-table .order-goods-list li {
+position: relative;
+min-height: 42px;
+_height: 42px;
+padding: 20px 20px 20px 100px;
+border-top: 1px solid #dfdfdf;
+}
+.uc-order-detail-item .order-detail-table .order-goods-list .goods-thumb {
+position: absolute;
+top: 10px;
+left: 10px;
+width: 80px;
+}
+.uc-order-detail-item .order-detail-table .column-action {
+width: 230px;
+padding: 30px 0 20px;
+text-align: center;
+vertical-align: top;
+}
+.order-detail-table .order-goods-list .goods-name {
+padding-bottom: 10px;display: inline-block;
+}
+.order-detail-table .order-goods-list .goods-price {
+position: absolute;
+top: 20px;
+right: 130px;
+}
+.order-detail-table .order-goods-list .goods-amount {
+position: absolute;
+top: 20px;
+right: 30px;
+}
+.order-detail-table .order-goods-list .goods-link {
+font-size: 12px;display: block;line-height: 20px;
+color: #6d6d6d;
+}
+.order-title{background:#fafafa; }
+.subtotals{font-size: 36px;}
+.pwidth{width:237px;float:left;margin: 0;line-height: 30px;}
+.colb{color:#333;width:70px;}
+.lh30{line-height: 30px;}
+.tbcell{display:table-cell;}

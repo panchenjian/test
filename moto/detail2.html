@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>订单详情</title>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<link rel="stylesheet" type="text/css" href="css/pdm.css">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/lodash.underscore.js"></script>
+<script type="text/javascript" src="js/layer.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		function mtChange(){
+			if($(window).width()<960){
+				$("#orderINfoC").removeClass("panel").find("div.panel").addClass("padb10 marb10");
+			}else{
+				$("#orderINfoC").addClass("panel").find("div.panel").removeClass("padb10 marb10");
+			}
+		}
+		$(window).resize(function(){
+			mtChange();
+		});
+		mtChange();
+	});
+</script>
+</head>
+<body>
+	<div class="page shopping-cart padb40" style="margin-top: 71px;">
+		<div class="hero row padt40 padb50">
+			<div class="left">
+				<h2 class="padb10">订单详情</h2>
+			</div>
+			<div class="right">
+				<a class="center button blue-1 small" href="detail.html"><span>返回订单管理</span></a>
+			</div>		
+		</div>
+
+		<div class="row">
+			<div class="col checkout-progress" id="orderINfoC">
+
+				<div id="">
+					<div class="panel">
+						<div class="row panel-title rule padt30 padb20">
+							<h3>物流信息</h3>
+						</div>
+						<div class="row cart-items">
+							<p><span class="colb">物流公司：</span>顺丰速递</p>
+							<p><span class="colb">物流单号：</span>XXXXXXXXXXXXXXX</p>
+							<p><span class="colb tbcell">物流跟踪：</span><span class="tbcell">2014-12-29 22:20:22 您的订单着火了</span></p>
+						</div>
+					</div>
+				</div>
+
+				<div id="">
+					<div class="panel">
+						<div class="row panel-title rule padt30 padb20">
+							<h3>收货信息</h3>
+						</div>
+						<div class="row cart-items">
+							<p><span class="colb">收货人：</span>XX</p>
+							<p><span class="colb">联系电话：</span>12312312312</p>
+							<p><span class="colb tbcell">收货地址：</span><span class="tbcell">上海 上海市 长宁区 金钟路999号</span></p>
+						</div>
+					</div>
+				</div>
+
+				<div id="">
+					<div class="panel">
+						<div class="row panel-title rule padt30 padb20">
+							<h3>订单信息</h3>
+						</div>
+						<div class="row cart-items">
+							<p class="pwidth"><span class="colb">订单编号：</span>XXXXXXXXXXX</p>
+							<p class="pwidth "><span class="colb">订单金额：</span>￥111，111,1.00元</p>
+							<p class="pwidth invoice"><span class="colb">下单时间：</span>2015、3、8 </p>
+							<p class="pwidth"><span class="colb">支付时间：</span>2015、3、8 </p>
+							<p class="pwidth invoice"><span class="colb">发货时间：</span>支付宝 </p>
+							<p class="invoice lh30"><span class="colb tbcell">发票信息：</span><span class="tbcell">公司，上海乐丽电子商务服务有限公司 </span></p>
+						</div>
+						
+				        
+					</div>
+				</div>
+
+				<div id="">
+					<div class="panel">
+						<div class="row panel-title rule padt30 padb20 p-mobile-only">
+							<h3>商品信息</h3>
+						</div>
+						<div class="row cart-items p-desktop-only">
+							<dl class="checkout-goods-list">
+                            <dt class="clearfix">
+                                <span class="col col-1">商品名称</span>
+                                <span class="col col-2">单品价格</span>
+                                <span class="col col-3">购买数量</span>
+                                <span class="col col-4">小计</span>
+                            </dt>
+                            <dd class="item clearfix">
+                            	<div class="item-row">
+                            		<div class="col col-1">
+                            			<div class="g-pic">
+                            				<img src="http://img08.mifile.cn/v1/MI_18455B3E4DA706226CF7535A58E875F0267/T1C1d_B4KT1RXrhCrK.jpg?width=40&amp;height=40" width="40" height="40"></div>
+                            			<div class="g-info">
+                            				<a href="#" target="_blank">小米手环炫彩腕带 蓝色</a>
+                            				<br><br>
+                            				<p>外观颜色：白色</p>
+                            				<p>存储容量：32G</p>
+                            			</div>
+                            		</div>
+
+                            		<div class="col col-2">19.9元</div>
+                            		<div class="col col-3">1</div>
+                            		<div class="col col-4">19.9元</div>
+                            	</div>
+                            </dd>
+                            </dl>
+	                        
+							<div class="checkout-count">
+	                            <div class="checkout-price">
+	                                <p class="checkout-total left">当前订单状态：<a>已完成</a></p>
+	                                
+	                                <p class="checkout-total right">商品件数：<strong>3</strong>件 &nbsp;&nbsp;&nbsp;&nbsp;金额共计：<span><strong id="totalPrice">￥3557.90</strong>元</span></p>
+	                            </div>
+	                        </div>
+						</div>
+						
+						<div class="row cart-items p-mobile-only">
+				            <ul>
+				                 
+								<li class="row padt40 padb30 item device">
+				                    <div class="col padt10 image">
+
+				                        <img src="img/MOTO_G_2ND_BLK_270.png" alt="">
+				                    </div>
+				                    <div class="col description showGoods">
+				                        <h4 class="name">
+				                            <a href="/Moto/Goods/">MOTO+G+二代+-32G</a>
+				                        </h4>
+				                        <div class="features">
+				                            
+											<p class="colors">
+				                                <span id="cart_s_26" data-value="26" data-code="moto.color">颜色</span>
+				                                : <span id="cart_si_2366" data-value="2366">深空灰</span>
+				                            </p>
+				                            
+											<p class="colors">
+				                                <span id="cart_s_27" data-value="27" data-code="moto.romsize">内存大小</span>
+				                                : <span id="cart_si_2378" data-value="2378">32g</span>
+				                            </p>
+				                            <h5>商品售价：￥3899</h5>
+				                            <p class="taxes"></p>
+											<h5>数量 : 1</h5>
+				                            <p class="taxes"></p>
+				                            <h5>商品金额：￥3899</h5>
+				                        </div>
+
+				                    </div>
+				                    
+				                </li>
+
+				                 
+				            </ul>
+				        	<div class="checkout-count clearfix">
+	                            <div class="checkout-price">
+	                                <ul>
+	                                    <li>
+	                                        商品件数：<span>3</span>件
+	                                    </li>
+	                                    <li>
+	                                        <p class="checkout-total rule">金额共计：<span><strong id="totalPrice">￥3557.90</strong>元</span></p>
+	                                    </li>
+	                                </ul>
+	                                <p class="checkout-total">当前订单状态：<a>已完成</a></p>
+	                            </div>
+	                        </div>
+				        </div>
+					</div>
+				</div>
+			</div>
+			<!-- /.main-content -->	
+
+		</div>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<style>.order-info {
+padding: 25px 30px 25px 32%;
+margin-bottom: 15px;
+position: relative;
+zoom: 1;
+}
+.order-info .icon-box {
+width: 30%;
+height: 200px;
+_height: 194px;
+position: absolute;text-align:center;
+top: 0;
+left: 0;
+background: #fafafa;
+zoom: 1;
+}
+.order-info .icon-box .iconfont {
+min-width:60px;
+max-width: 104px;
+line-height: 1;
+width: 40%;
+}
+#frmPay{text-align:center;padding-bottom:20px;font-size:20px;}
+#frmPay strong{margin-right: 8%;}
+#orderInfo #frmPay {text-align:left;padding-bottom:0px;font-size:14px; }
+#btnPay {padding:10px; }
+.cart-items {margin-top:20px; }
+.big #btnPay{font-size: 24px;font-weight: 600;  }
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lodash.underscore.js"></script>
+	<script type="text/javascript" src="js/layer.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			 if ($("#btnPay").is(":visible")) {
+                setTimeout(function () {
+                    //var m=layer.load("正在连接支付平台...");
+                    //$("#btnPay").click();
+                    //layer.close(m);
+                },3000);
+            }
+            function reSize() {
+                if ($(window).width() < 700) {
+                    $("#frmPay").appendTo("#orderDiv").find("div").addClass("big");
+                    if($(window).width()<500){
+                    	$("#msg1").hide();
+                    }else{
+                    	$("#msg1").show();
+                    }
+                } else {
+                    $("#frmPay").appendTo("#orderInfo");
+                }
+            }
+            reSize();
+            $(window).resize(function () { reSize(); });
+		});
+	</script>
+
+</head>
+<body>
+	<div class="page shopping-cart padb40" style="margin-top: 71px;padding-top:30px;">
+		
+		<div class="row">
+			<div class="col checkout-progress">
+
+					<div class="panel" id="orderDiv">
+						<div class="row panel-title rule padt30 padb20">
+							<h3>订单支付成功！</h3>
+						</div>
+						<div class="row cart-items">
+							<div class="order-info" id="orderInfo">
+				                <div class="msg">
+				                    <h3 id="msg1">您的订单已提交成功！付款咯～</h3>
+				                    <p>
+				                       <!--请在<span class="pay-time-tip">??小时内</span>完成支付，超时后将取消订单-->
+				                    </p>
+				                    <p class="post-date">成功付款后，7天发货</p>
+				                </div>
+				                <div class="info">
+				                    <p>
+				                        金额：<span class="pay-total">68.90元</span>
+				                    </p>
+				                    <p>
+				                        订单：1150106750039814                    </p>
+				                   
+				                     <p>
+                                        正在为您连接到付款平台，<img style="vertical-align: middle;" src="img/loadding.gif" />
+                                    </p>
+                                    <br/>
+                                    <form id="frmPay">
+                                    	<strong>您也可以</strong><div class="button blue-1 checkout-button">
+							            <input type="submit" id="btnPay" class="submit" value="立即支付" /></div>
+                                    </form>
+				                </div>
+				                <table class="icon-box"><tr><td valign="middle">
+				                	<img class="iconfont" src="img/successIcon.png" /></td></tr>
+				                </table>
+				            </div>
+						</div>
+					</div>
+
+			</div>
+			<!-- /.main-content -->	
+
+		</div>
+	</div>
+
+</body>
+</html>

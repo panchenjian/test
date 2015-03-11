@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>moto手机</title>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jsrender.min.js"></script>
+	<script type="text/javascript" src="js/lodash.underscore.js"></script>
+	<script type="text/javascript" src="js/mini-cart.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			/*导航菜单点击事件*/
+			function navClick(){
+				if($(window).width() >= 960){
+					$("li.dropdown>a").removeClass("selected").next().removeAttr("style");
+					$("ul.nav-items").show().children().unbind("mouseenter mouseleave click").bind("mouseenter mouseleave",function(){
+						$(this).toggleClass("active");
+					});
+
+				}else{
+					$("ul.nav-items>li").unbind("mouseenter mouseleave click").bind("click",function(){
+						$(this).children("a").toggleClass("selected").next().toggle("slow");
+					});
+				}
+			}
+			navClick();
+			$(window).resize(function(){
+				navClick();
+			});
+			
+
+			$("a.menu-toggle").click(function(){
+				var $this=$(this);
+				if(!$this.hasClass("selected")){
+					$this.addClass("selected");
+					$("ul.nav-items").slideDown("slow");
+				}else{
+					$this.removeClass("selected");
+					$("ul.nav-items").slideUp("slow");
+				}
+			});
+			$("a.to-top").click(function(){
+				$("html, body").animate({
+					scrollTop: 0
+				}, 350);
+			});
+
+
+			//静态引入选择手机页
+			$("#container").children().first().load("contai.html",function(){
+				//下拉选择 颜色 机型  模拟下拉框显示
+				$("div.select-row div.select").click(function(e){
+					e.stopPropagation();
+					if($(this).hasClass("disabled"))
+						return false;
+					
+					$(this).toggleClass("select-active");
+				});
+				//模拟下拉框点击
+				$("div.select-dropdown").find("li").click(function(){
+					var $this=$(this);
+					if($this.hasClass("disabled")){
+						return false;
+					}else{
+						//显示选中的文字
+						$this.parent().parent().prev().text($this.children().text());
+						//样式选中
+						$this.parent().find(".selected").removeClass("selected");
+						$this.addClass("selected");
+						//下一个模拟下拉框可以点击了
+						var selList=$("div.select-row div.select");
+						if(selList.eq(1).hasClass("disabled"))
+							selList.eq(1).removeClass("disabled");
+						else{
+							selList.eq(2).removeClass("disabled");
+							$("a.add-to-cart").removeClass("disabled");
+						}
+					}
+				});
+				//任意点击，消除模拟下拉框 显示状态
+				$("body").click(function(){
+					$("div.select-active").removeClass("select-active");
+				});
+
+				//手机图集
+				$("div.image").hover(function(){
+					$(this).find(".gallery-btn").fadeIn();
+				},function(){
+					$(this).find(".gallery-btn").fadeOut();
+				})
+
+				//Open gallery modals
+    $('.open-gallery-modal').on('click', function(e){
+        e.preventDefault();
+
+			var data003 = {
+				"270": ["img/MOTO_G_2ND_BLK_270.png"],
+				"360view": [],
+				"view360": [],
+				"540": ["img/MOTO_G_2ND_BLK_540.png"],
+				"655": [],
+				"logo": [],
+				"gallery": ["img/MOTO_G_2ND_BLK_540.png", "img/MOTO_G_2ND_WHT_540.png"],
+				"swatch": [],
+				"thumbnail": []
+			};
+        
+        if($("div.overlay").length==0){
+        	$("body").append(_.template($("#gallery-modal-t").html(),data003));
+        	$("#gallery-modal").prev().height($("body").height());
+        }else{
+        	$("#gallery-modal").show().prev().show();
+        }
+        
+        var galMod=$("#gallery-modal");
+        galMod.css("top",($(window).height()-galMod.children().height())/2);
+
+            $('#gallery-modal .image-gallery').find('li:first').show();
+            $('#gallery-modal .image-gallery').find('li:first img').one('load', function() {
+                var hOffset = 150;
+                if($('#gallery-modal .image-gallery').find('li:first img').height() > innerHeight - hOffset) {
+                    $('#gallery-modal .image-gallery').find('li:first img').height(innerHeight - hOffset);
+                }
+                $('#gallery-modal .image-gallery').height($('#gallery-modal .image-gallery').find('li:first img').height());
+            });
+
+            $('#gallery-modal .container').on('click', function(e){
+                //$("#gallery-modal").hide().prev().hide(); 空白处点击 关闭事件
+                galMod.prev().remove();
+                galMod.remove();
+            });
+
+            //Resize functionality for .image-gallery container
+            function resizeContainer($galleryContainer) {
+                var $viewerContainer = $('.cards-rotator'),
+                    $galleryWrapper = $('#gallery-modal .image-gallery'),
+                    adaptiveHeight = innerHeight - 150;
+
+                if ( $viewerContainer.parent().hasClass('active') ) {
+                    if($viewerContainer.find('li.active img').height() > adaptiveHeight) {
+                        $viewerContainer.find('li img').height(adaptiveHeight);
+                    }
+                    $galleryWrapper.height($viewerContainer.find('li img').height());
+                    $viewerContainer.height($viewerContainer.find('li img').height());
+                } else {
+                    if($galleryWrapper.find('li.active img').height() > innerHeight - 150) {
+                        $galleryWrapper.find('li.active img').height(innerHeight - 150);
+                    }
+                    $galleryWrapper.height($galleryWrapper.find('li.active').height());
+                }
+            }
+
+            $('#gallery-modal .control').on('click', function(e){
+                e.stopPropagation();
+
+                var $galleryContainer = $('#gallery-modal .image-gallery'),
+                    $pagination = $('#gallery-modal .pagination');
+
+                if($(this).hasClass('left')) {
+                    //Left Control
+                    $galleryContainer.prepend($galleryContainer.children('li:last').addClass('active').hide())
+                        .find('li:first').next().removeClass('active').prev().fadeIn(300, function() {
+                            $(this).next().hide().removeClass('active');
+                            var innerHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+                            resizeContainer();
+                        });
+
+                    if($pagination.find('span.active').prev().length > 0) {
+                        $pagination.find('span.active').removeClass('active').prev().addClass('active');
+                    } else {
+                        $pagination.find('span.active').removeClass('active').parent().find('span:last').addClass('active');
+                    }
+                } else {
+                    //Right Control
+                    $galleryContainer.append($galleryContainer.children('li:first').removeClass('active'))
+                        .find('li:first').addClass('active').fadeIn(300, function() {
+                            $galleryContainer.find('li:last').hide();
+                            var innerHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+                            resizeContainer();
+                        });
+
+                    if($pagination.find('span.active').next().length > 0) {
+                        $pagination.find('span.active').removeClass('active').next().addClass('active');
+                    } else {
+                        $pagination.find('span.active').removeClass('active').parent().find('span:first').addClass('active');
+                    }
+                }
+
+            });
+
+            $('#gallery-modal .image-gallery').on('click', function(e){
+                e.stopPropagation();
+            });
+
+            $('#gallery-modal .pagination span').on('click', function(e){
+                e.stopPropagation();
+                var $galleryContainer,$pagination;
+                //console.log('thumb click: ' + $(this).index());   小点点击
+                if(!$(this).hasClass('active')) {
+                    $galleryContainer = $('#gallery-modal .image-gallery');
+                    $pagination = $('#gallery-modal .pagination');
+
+                    var incrementIndex = (($(this).index() - $(this).parent().find('.active').index() > 0)) ? $(this).index() - $(this).parent().find('.active').index() : ($(this).index() - $(this).parent().find('.active').index()) + $(this).parent().find('span').length;
+
+                    for(var i = 0; i < incrementIndex; i++) {
+                        $galleryContainer.append($galleryContainer.find('li:first').removeClass('active'));
+
+                        if($pagination.find('span.active').next().length > 0) {
+                            $pagination.find('span.active').removeClass('active').next().addClass('active');
+                        } else {
+                            $pagination.find('span.active').removeClass('active').parent().find('span:first').addClass('active');
+                        }
+
+                    }
+
+                    $galleryContainer.find('li:first').addClass('active').fadeIn(300, function() {
+                            $galleryContainer.children('li').not('.active').hide();
+                            resizeContainer();
+                        });
+                }
+            });
+
+        });
+    });
+			});
+		
+	</script>
+	<script type="text/javascript" src="js/header.js"></script>
+<script id="cartTempl" class="template" type="text/html">
+        <%_.each(data001, function(item,index) {%> 
+	        <li class="cartItem"> 
+		      	<div class="cartImg"> 
+		       		<img src="<%=item.imgSrc%>" /> 
+		      	</div> 
+		      	<div class="cartItemDetail">
+		        	<%= index+1%> - <%=item.text%> 
+		       		<span class="price">$<%=item.price%> &nbsp;</span> 
+		      	</div> 
+		      	<div class="cartItemRemove"> 
+		       		<a class="remove">Remove</a> 
+		      	</div>
+			</li> 
+        <%});%> 
+</script>
+<script type="text/html" class="template" id="gallery-modal-t">
+	<div class="overlay" style="height: 100%; opacity: 0.5;"></div>
+	<div class="modal" id="gallery-modal">
+				<div class="container">
+					<div class="controls">
+                        <% if(gallery.length > 1 || view360.length > 1) { %>
+						<div class="left control"></div>
+						<div class="right control"></div>
+						<% } %>
+					</div>
+					<div class="row">
+						<div class="close"></div>
+						<ul class="image-gallery">
+							<% for(var index = 0; index < gallery.length; index++) { %>
+                                <% if(gallery[index] != '') { %>
+                                    <li><img src="<%-gallery[index]%>" /></li>
+                                <% } %>
+							<% } %>
+                            <% if (view360.length > 1) { %>
+                                <li>
+                                    <ul class="cards-rotator">
+                                        <% for (var i = 0, len = view360.length; i < len; i++) { %>
+                                            <li <%=  (i == 0) ? 'class=active' : ''  %>>
+                                                    <img src="<%-view360[i]%>" alt="">
+                                            </li>
+                                        <% } %>
+                                    </ul>
+                                </li>
+                            <% } %>
+						</ul>
+						<div class="pagination">
+							<% for(var index = 0; index < gallery.length; index++) { %>
+								<% if(index == 0) { %>
+									<span class="active">&bull;</span>
+								<% } else { %>
+                                        <span>&bull;</span>
+								<% } %>
+							<% } %>
+                            <% if (view360.length > 1) { %>
+                                        <span>&bull;</span>
+							<% } %>
+						</div>
+				</div>
+			</div>
+		</div>
+	</script>
+</head>
+<body>
+	<header class="row locked">
+
+		<section class="promo-header">
+			<div class="in-grid">
+				<ul>
+					<li class="promo-message">
+						Get $50 off any $350 purchase or $100 off your $500 purchase, good until 12/23 at 11 a.m. CT.*
+						<a href="#" class="promoClose">close promo</a>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<nav class="in-grid">
+			<ul class="menu-logo">
+				<li class="menu-li tablet-mobile-only">
+					<a class="menu-toggle">Menu</a>
+
+				</li>
+				<li class="logo-li">
+					<a class="logo" href="http://www.motorola.com">
+						<img src="img/m-logo.png" alt="Home"></a>
+				</li>
+
+			</ul>
+			<ul class="nav-items">
+
+				<li class="dropdown">
+					<a href="#" class="">
+						<span>Mobile Phones</span>
+					</a>
+					<ul>
+
+						<li>
+							<a href="/us/motomaker?pid=FLEXR2">Moto X (2nd Gen.)</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/Moto-G-2nd-Gen/moto-g-2nd-gen-pdp.html">Moto G (2nd Gen.)</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/consumers/shop-all-mobile-phones/Moto-E-pdp/moto-e.html">Moto E</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/droid-turbo-pdp.html">DROID Turbo</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/consumers/nexus-6-header/Nexus-6/nexus-6-motorola-us.html">Nexus 6</a>
+
+						</li>
+
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="#" class="">
+						<span>Moto 360</span>
+					</a>
+					<ul>
+
+						<li>
+							<a href="http://www.motorola.com/us/consumers/shop-all-other/Moto-360/moto360-pdp.html">Buy now</a>
+
+						</li>
+
+						<li>
+							<a href="http://moto360.motorola.com/" target="_blank">Learn more</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/moto-360-bands/">Bands</a>
+
+						</li>
+
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="#" class="">
+						<span>ACCESSORIES</span>
+					</a>
+					<ul>
+
+						<li>
+							<a href="http://www.motorola.com/us/accessories-cases-covers/">Cases &amp; Shells</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/accessories-headphones-speakers/">Music</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/accessories-batteries-chargers/">Power</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/accessories-bluetooth-headsets/">Talk</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/accessories-docks/">Docks</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/accessories-more/">More</a>
+
+						</li>
+
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="#" class="">
+						<span>SHOP ALL</span>
+					</a>
+					<ul>
+
+						<li>
+							<a href="http://www.motorola.com/us/consumers/shop-all-mobile-phones/">Mobile Phones</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/shop-all-accessories-category/">Accessories</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/other-cordless-phones/">Cordless Phones</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/other-baby-monitors/">Monitors</a>
+
+						</li>
+
+						<li>
+							<a href="/us/motorola-shop-all-sale.html">Specials</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/shop-all-clearance/">Clearance</a>
+
+						</li>
+
+					</ul>
+				</li>
+
+				<li class="dropdown">
+					<a href="https://motorola-global-portal.custhelp.com/app/home/" class="">
+						<span>GET HELP</span>
+					</a>
+					<ul>
+
+						<li>
+							<a href="https://motorola-global-portal.custhelp.com/app/home/">Product Support</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/ANDROID/m-Android-Overview.html">Android Software</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/consolidated-apps-page/consolidated-apps-page.html">Motorola Apps</a>
+
+						</li>
+
+						<li>
+							<a href="https://motorola-global-portal.custhelp.com/app/mcp/service/" target="_blank">Contact Us</a>
+
+						</li>
+
+						<li>
+							<a href="https://motorola-global-portal.custhelp.com/app/mcp/service/">Returns &amp; Repair</a>
+
+						</li>
+
+						<li>
+							<a href="https://forums.motorola.com/pages/home">Support Forums</a>
+
+						</li>
+
+						<li>
+							<a href="http://www.motorola.com/us/Motorola-Developers/motorola-developers.html">For Developers</a>
+
+						</li>
+
+						<li>
+							<a href="/us/my-account#view-order-history">Online Order Status</a>
+
+						</li>
+
+						<li>
+							<a href="https://motorola-global-portal.custhelp.com/app/esp/g_id/3813" target="_blank">Moto Care Accident Protection</a>
+
+						</li>
+
+					</ul>
+				</li>
+
+			</ul>
+
+			<ul class="tools">
+				<li class="desktop-only">
+					<a class="search-open">Search</a>
+				</li>
+
+				<li class="cart-li">
+
+					<a class="cart empty minicarttotal" href="cart.html">
+						<span class="num-items">0</span>
+					</a>
+
+				</li>
+
+				<li class="login">
+					<a class="button blue-1" href="/us/sign-in?returnurl=http%3A%2F%2Fwww.motorola.com%2Fon%2Fdemandware.store%2FSites-Motorola_US-Site%2Fen_US%2FHome-Show">
+						<span>Sign in</span>
+					</a>
+				</li>
+
+			</ul>
+		</nav>
+		<div class="search-site">
+			<div class="in-grid">
+				<div class="input text">
+
+					<gcse:searchbox-only gname="searchbox" resultsurl="/us/search"></gcse:searchbox-only>
+				</div>
+			</div>
+		</div>
+
+	</header>
+	<div id="container">
+		<div></div>
+		<div class="sticky-wrapper desktop-only" style="height: 80px;" id="cat-articles">
+			<div class="sticky-nav desktop-only">
+				<div class="in-grid">
+					<div class="inner">
+						<ul class="nav right" style="padding: 0px;">
+
+							<li>
+								<a class="stickylink active" href-id="#art-0" onclick="articleClick(this)" data-value="322" id="a-322">Reviews</a>
+							</li>
+
+							<li>
+								<a class="stickylink" href-id="#art-1" onclick="articleClick(this)" data-value="323" id="a-323">Film</a>
+							</li>
+
+							<li>
+								<a class="stickylink" href-id="#art-2" onclick="articleClick(this)" data-value="324" id="a-324">Display</a>
+							</li>
+
+							<li>
+								<a class="stickylink" href-id="#art-3" onclick="articleClick(this)" data-value="325" id="a-325">Power</a>
+							</li>
+
+							<li>
+								<a class="stickylink" href-id="#art-4" onclick="articleClick(this)" data-value="326" id="a-326">Performance</a>
+							</li>
+
+						</ul>
+
+						<h3>Product Details</h3>
+						<a class="to-top desktop-only">Back to top</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="hero-container">
+        <section class="hero-card" id="art-0"><div class="hero-img responsive-image story-display-speakers-moto-g-titan"></div><style type="text/css">.story-display-speakers-moto-g-titan { background-image: url("img/9RSaVJmp-US_moto_g_card_2_BrilliantDisplay_bleed.jpg"); } @media only screen and (max-device-width : 500px) { .story-display-speakers-moto-g-titan { background-image: url("img/at2tH2da-US_moto_g_card_2_BrilliantDisplay_mobile.jpg"); background-position: center top !important; background-size: 100% auto !important; padding-bottom: 100% !important; position: relative !important; display: block !important; } } </style> <div class="in-grid card-size" style="height: 907px;"><div class="retainer row"><div class="card-content"><div class="description left"><div class="inner"><h3></h3><h2 style="font-size:45px;line-height:1.1;font-weight:bold;color:#ffffff;">5“显示器和立体声音响。特殊的价格。</h2><h4></h4><h4></h4><p>With the sharpest display in its class and stereo sound, all of your photos, music, and videos look and sound their best in brilliant 5” HD.</p><!-- --> <!-- Made to Order devices get configurator links --> </div></div></div></div></div></section>
+    </div>
+    <div class="hero-container">
+        <section class="hero-card" id="art-1"></section>
+    </div>
+    <div class="hero-container">
+        <section class="hero-card" id="art-2"></section>
+    </div>
+    <div class="hero-container">
+        <section class="hero-card" id="art-3"></section>
+    </div>
+    <div class="hero-container">
+        <section class="hero-card" id="art-4"></section>
+    </div>
+    
+	<script type="text/javascript" src="js/wenzhang.js"></script>
+</body>
+</html>

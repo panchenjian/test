@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<style>.order-info {
+padding: 25px 30px 25px 32%;
+margin-bottom: 15px;
+position: relative;
+zoom: 1;
+}
+.order-info .icon-box {
+width: 30%;
+height: 200px;
+_height: 194px;
+position: absolute;text-align:center;
+top: 0;
+left: 0;
+background: #fafafa;
+zoom: 1;
+}
+.order-info .icon-box .iconfont {
+min-width:60px;
+max-width: 104px;
+line-height: 1;
+width: 40%;
+}
+#frmPay{text-align:center;padding-bottom:20px;font-size:20px;}
+#frmPay strong{margin-right: 8%;}
+#orderInfo #frmPay {text-align:left;padding-bottom:0px;font-size:14px; }
+#btnPay {padding:10px; }
+.cart-items {margin-top:20px; }
+.big #btnPay{font-size: 24px;font-weight: 600;  }
+#orderDiv{min-height:350px;}
+	</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lodash.underscore.js"></script>
+	<script type="text/javascript" src="js/layer.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			function reSize() {
+                var ww = $(window).width();
+                if (ww < 500) {
+                   // $("#msg1").hide();
+                } else {
+                    $("#msg1").show();
+                }
+            }
+            reSize();
+            $(window).resize(function () { reSize(); });
+		});
+	</script>
+
+</head>
+<body>
+	<div class="page shopping-cart padb40" style="margin-top: 71px;padding-top:30px;">
+		
+		<div class="row">
+			<div class="col checkout-progress">
+
+					<div class="panel" id="orderDiv">
+						<div class="row panel-title rule padt30 padb20">
+							<h3>订单支付成功！</h3>
+						</div>
+						<div class="row cart-items">
+							<div class="order-info">
+				                <div class="msg p-desktop-only">
+				                    <h5 id="msg1">感谢您的订购，我们将尽快发货</h5>
+				                    <p>
+				                       您可以前往<a>订单管理</a>查询订单最新状态
+				                    </p>
+				                </div>
+				                <div class="info">
+				                    <p>
+				                        金额：<span class="pay-total">68.90元</span>
+				                    </p>
+				                    <p>
+				                        订单：1150106750039814                    </p>
+				                     <p>
+				                        支付方式：支付宝</p>
+				                </div>
+				                <table class="icon-box"><tr><td valign="middle">
+				                	<img class="iconfont" src="img/errIcon.png" /></td></tr>
+				                </table>
+				            </div>
+						</div>
+					</div>
+
+			</div>
+			<!-- /.main-content -->	
+
+		</div>
+	</div>
+
+</body>
+</html>

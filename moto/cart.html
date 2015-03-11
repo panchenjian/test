@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<style>.button.optimizelyred-1, .button.optimizelyred-1:hover, .button.optimizelyred-1:active {  padding:0 20px;	background: #eb4752;}.button.optimizelyred-1.disabled, .button.optimizelyred-1.disabled:hover,.button.optimizelyred-1.disabled:active {	background: #f7f8f9;	cursor: default;}.button.optimizelyred-1 input[type=submit] {	text-align: center;	color: #fff;	font-weight: 600;	line-height: 1.25;	display: inline-block;	text-shadow: rgba(31,40,43,0.5) 0 -1px 3px;}.button.optimizelyred-2, .button.optimizelyred-2:hover, .button.optimizelyred-2:active {  padding:0 20px;	background: #d14836;  background-image: -webkit-linear-gradient(top,#dd4b39,#d14836);}.button.optimizelyred-2.disabled, .button.optimizelyred-2.disabled:hover,.button.optimizelyred-2.disabled:active {	background: #f7f8f9;	cursor: default;}.button.optimizelyred-2 input[type=submit] {	text-align: center;	color: #fff;	font-weight: 600;	line-height: 1.25;	display: inline-block;	text-shadow: rgba(31,40,43,0.5) 0 -1px 3px;}</style>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/lodash.underscore.js"></script>
+	<script type="text/javascript" src="js/jsrender.min.js"></script>
+	<script type="text/javascript" src="js/layer.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			//空购物车
+			$("#emptyStateContainer").hide();
+			//购物车内有商品
+			var data002=[{	
+							imgSrc:"img/MOTO_G_2ND_WHT_270.png",
+							text:"Moto G (2nd Gen.) Global GSM (White) (Global GSM) (White)",
+							price:179.99
+						}];
+			var cartItemTempl = $.templates('#cartItemTempl');
+            var cartItemHtml = cartItemTempl.render({ list: data002 });
+			$("#devicesContainer").html(cartItemHtml);
+			//价格按钮高亮
+			$("#summaryContainer").find(".disabled").removeClass("disabled");
+
+			/**
+             * Event handler for the select/radio change events.
+             */
+            function optionChangeEventHandler(e){
+                updateUpdateCartButton( $(this).closest('.multiselect-form') );
+            }
+
+            function ie8OptionChangeEventHandler(e){
+                $(e.target).closest(".product-variant-div").find("input").click();
+                updateUpdateCartButton( $(this).closest('.multiselect-form') );
+            }
+            function findVariant( multiselectform ){
+            	var selectedValues = new Array();
+            	multiselectform.find('input.product-variant-radio,select.product-variant-select option:selected,div.product-variant-imageselect.selected').each(function(){
+                    if($(this).is('.product-variant-radio'))
+                    {
+                        if($(this).is(':checked'))
+                        {
+                            var value = $(this).val();
+                            if ( value == null || value == '' || value == 'undefined' ){
+                                value = $(this).attr("data-value");
+                            }
+                            selectedValues.push( value );
+                            $(this).next().addClass('checked');
+                        }
+                        else
+                            $(this).next().removeClass('checked');
+                    }
+                    else
+                    {
+                        var value = $(this).val();
+                        if ( value == null || value == '' || value == 'undefined' ){
+                            value = $(this).attr("data-value");
+                        }
+                        selectedValues.push( value );
+                    }
+
+                });
+				
+				var variant = "";
+
+                return variant;
+            }
+             /**
+             * Updates the Update Cart button based on the current selections in the supplied multiselectform.
+             */
+            function updateUpdateCartButton( multiselectform ){
+            	//variant存放了更新的数据，含变化的价格，是否还有库存……
+                var variant = findVariant( multiselectform );
+                if (variant) {
+                    //Change Add To Cart Button Link and Text
+                    var link = "#";
+                    multiselectform.parents('.modal').find('.update-cart')
+                                .attr("href", link)
+                                .removeClass('not-available')
+                                .removeClass('disabled')
+                                .attr("target", '_self')
+                                .find('span').text("无货01");
+
+
+                    //If product is selected but still out of stock, disable the button
+                    if(variant.availability == 'NOT_AVAILABLE' && variant.isEcommerceEnabled) {
+                        multiselectform.parents('.modal').find('.update-cart').addClass('disabled').attr('href','').addClass('not-available').find('span').text("无货02");
+                    }
+                    // Update the Price
+                    if(variant.fromPricing) {
+                        $('.modal .multiselect-form .price').html('from <span>'+variant.price+'</span>');
+                    } else {
+                        $('.modal .multiselect-form .price').html('<span>'+variant.price+'</span>');
+                    }
+
+                } else {
+                    // 因为一个有效的变量不能被发现，这意味着用户输入一组选项，我们没有定义的实际变
+                    //multiselectform.parents('.modal').find('.update-cart').addClass('disabled').attr('href','').addClass('not-available').find('span').text("无货03");
+                }
+            }
+
+            
+
+			
+
+			//edit按钮点击
+			$("a.editmodal").click(function(){
+				//edit弹窗数据
+				var data004={
+					name:"aaaaa",
+					price:"3999.00",
+					variationAttributes:[{
+						id:"color",
+						name:"外观颜色",
+						showradios:true,
+						values:[{
+							id:"black",
+							selected:true,
+							priceDifferential:"黑色"
+						},{
+							id:"white",
+							selected:false,
+							priceDifferential:"白色"
+						}]
+					},{
+						id:"memorySizeMotoG",
+						name:"存储容量",
+						showradios:true,
+						values:[{
+							id:"32G",
+							selected:true,
+							priceDifferential:"32G"
+						},{
+							id:"64G",
+							selected:false,
+							priceDifferential:"64G"
+						}]
+					},{
+						id:"shopCount",
+						name:"订购数量",
+						values:[{
+							id:"1",
+							selected:true,
+							priceDifferential:"1"
+						},{
+							id:"2",
+							selected:false,
+							priceDifferential:"2"
+						},{
+							id:"3",
+							selected:false,
+							priceDifferential:"3"
+						}]
+					}]
+				};
+				var cartEditTempl = _.template($('#edit-companion-modal').html(),data004);
+				$("#cart-edit").html(cartEditTempl);
+
+				if($('html').is('.lt-ie9')){
+	                $("label.product-variant-label").on('click', ie8OptionChangeEventHandler);
+	            }
+	            else{
+	                $("input.product-variant-radio").on('change', optionChangeEventHandler);
+	            }
+	            $("input.product-variant-radio:checked").trigger('change');
+
+				openWinTp($("#cart-edit"));
+				
+				//自设关闭
+				$('#cart-edit a.button').on('click', function(){
+				    closeWinTp($("#cart-edit"));
+				});
+			});
+			//remove按钮点击
+			$("a.remove").click(function(){
+				var data005={
+					displayImage:"img/MOTO_G_2ND_WHT_270.png",
+					name:"MOTO_G_2ND_WHT_270",
+					uuid:"sbsj001"
+				};
+				var cartRemoveTempl = _.template($('#remove-device-modal').html(),data005);
+				$("#cart-remove").html(cartRemoveTempl);
+
+				openWinTp($("#cart-remove"));
+				//自设关闭
+				$('#cart-remove a.button,#cart-remove div.close').on('click', function(){
+				    closeWinTp($("#cart-remove"));
+				});
+			});
+			//more按钮点击
+			$("a.more").click(function(){
+				var pageii = $.layer({
+				    type: 1,
+				    area: ['620px', '506px'],
+				    title: false,
+				    border: [0],
+				    closeBtn: [0, false], //去掉默认关闭按钮
+				    page: {
+				        dom: '#learnMore'
+				    }
+				});
+				//自设关闭
+				$('#learnMore .close').on('click', function(){
+				    layer.close(pageii);
+				});
+			});
+			var layerBg=$("#overlay");
+			function openWinTp(obj){
+				layerBg.height($(document).height()).show();
+				obj.css("top",($(window).height()-obj.height())/2).show();
+			}
+			function closeWinTp(obj){
+				layerBg.hide();
+				obj.children().remove();
+			}
+		});
+	</script>
+	<script type="text/x-jsrender" id="cartItemTempl">
+		<div class="row panel-title rule padt30 padb20">
+			<h3>Devices</h3>
+		</div>
+		<div class="row cart-items">
+			<ul>
+				{{for list}}
+				<li class="row padt40 padb30 item device" >
+					<div class="col padt10 image">
+
+						<img src="{{:imgSrc}}" alt=""></div>
+					<div class="col description">
+						<h4 class="name">
+							<a href="index.html">{{:text}}</a>
+						</h4>
+						<div class="features">
+
+							<p class="colors">
+								Color:
+								Black
+							</p>
+							<p class="model">Model: 00503NARTL</p>
+
+							<p class="availability">Availability: In-Stock</p>
+
+							<p class="taxes"></p>
+						</div>
+
+						<div class="edit-buttons">
+
+							<a class="editmodal">Edit</a>
+
+							<a class="remove">Remove</a>
+						</div>
+
+					</div>
+					<div class="col price">
+						<p>${{:price}}</p>
+
+					</div>
+				</li>
+
+				<li class="device-protection row panel round-bottom gray-light padt40 padb30 item" >
+					<div class="col padt10 image">
+						<img src="img/MOT_motocare.png" alt=""></div>
+					<div class="col description">
+						<h4 class="name">Moto Care Accident Protection</h4>
+						<div class="features">
+							<p class="blurb">
+								$39.99
+								<br></p>
+							<p>
+								Protect yourself when life happens with accidental damage and extended mechanical coverage.
+							</p>
+							<p></p>
+						</div>
+						<div class="edit-buttons">
+							<a class="more">Learn more</a>
+						</div>
+					</div>
+				</li>
+				{{/for}}
+			</ul>
+		</div>
+	</script>
+	<script type="text/html" class="template" id="edit-companion-modal">
+
+	<div class="multiselect-form panel gray-light padlr10">
+		<div class="padt20 padlr10">		
+			<div class="row span_12">
+				<h5 style="text-align:left">修改商品 for <%= name %></h5>
+			</div>
+
+			<div class="row span_12">
+				<p>选择商品属性后并点击 &quot;确认&quot; 完成修改</p>
+			</div>
+
+			<div id="edit-options-multiple" class="row padb20 span_12">
+				
+			<% for(var i=0; i < variationAttributes.length; i++){ %>
+				<% var variationAttribute = variationAttributes[i]; %>
+			<div class="edit-options-multiple-option row padt10 padb10"> 
+				
+              	<h5 class="left padl20"><%- variationAttribute.name %>&nbsp;&nbsp;</h5>
+				<div class="left desktop-break" id="variant-<%- variationAttribute.id %>">
+				
+				 	<% if ( variationAttribute.showradios ) { %>
+
+						<div class="toggle-btn-grp cssonly">
+
+						<% if ( variationAttribute.values ) { %>
+							<% for (var j=0; j < variationAttribute.values.length; j++) { %>
+							<div  class="product-variant-div left">
+								<input type="radio" class="circle_input required product-variant-radio" name="variant-<%- variationAttribute.id %>" id="<%- variationAttribute.values[j].id %>" value="<%- variationAttribute.values[j].id %>" <% if (variationAttribute.values[j].selected ) { %>checked="checked"<% } %>/>
+								<label class="product-variant-label toggle-btn" for="<%- variationAttribute.values[j].id %>"><%- variationAttribute.values[j].value %><% if ( variationAttribute.values[j].priceDifferential ) { %><span class=""><%- variationAttribute.values[j].priceDifferential %></span><% } %></label>
+							</div>
+							<% } %>
+						<% } %>
+
+						</div>
+
+
+					<% } else { %>
+						
+						<div class="">
+						<select name="variant-<%- variationAttribute.id %>" class="product-variant-select" data-attributeid="<%- variationAttribute.id %>">;
+						<% if ( variationAttribute.values ) { %>
+							<% for (var j=0; j < variationAttribute.values.length; j++) { %>
+							<option value="<%- variationAttribute.values[j].id %>" <% if (variationAttribute.values[j].selected ) { %>selected="true"<% } %> ><%- variationAttribute.values[j].value %> <%- variationAttribute.values[j].priceDifferential %></option>
+							<% } %>
+						<% } %>
+						</select>
+						</div>
+
+					<% } %>
+
+				</div>
+            </div>
+			<% } %>
+			</div>
+	
+			<div id="buttonzone" class="row padt10 padb20">
+				<div id="edit-price" class="col left">
+              		<span>商品单价:&nbsp;<h6 class="price right">￥<%- price %></h6></span>
+             	</div>
+          
+             	<div class="col right">
+					<a href="#" class="button blue-1 medium update-cart"><span>取消</span></a>
+    			</div>
+                <div id="edit-apply" class="col right">
+                	<a href="#" class="button blue-1 medium cancel"><span>确认</span></a>
+			  	</div>
+			</div>
+
+		</div>
+
+	</div>
+</script>
+<script type="text/html" class="template" id="remove-device-modal">
+
+			<div class="container">
+				<div class="close"></div>
+				<div class="title padb20">		
+					<h5>Remove This Item?</h5>
+				</div>
+				<div class="row padb20">
+					<div class="image left">
+						<img src="<%- displayImage %>" name="<%- name %>"/>
+					</div>
+					<div class="content right">
+						<h5"><%- name %></h5>
+					</div>
+				</div>
+				<div class="buttons">
+					<a class="button blue-1 small yes" id="product-<%- uuid %>"><span>Yes</span></a>
+					<a class="button white-3 small no"><span>No</span></a>
+				</div>
+			</div>
+
+</script>
+</head>
+<body>
+	<div class="page shopping-cart padb40" style="margin-top: 71px;">
+
+		<div class="hero row padt40 padb50">
+			<div class="left">
+				<div class="padb10 mobile-only">
+
+					<a class="sign-in" href="https://www.motorola.com/on/demandware.store/Sites-Motorola_US-Site/en_US/CO_PG_Login-Template?template=CO_PG_Cart-Template">Sign in</a>
+
+				</div>
+				<h2 class="padb10">Shopping Cart</h2>
+			</div>
+			<div class="mini-summary mobile-only">
+				<p class="item-count">0 Items</p>
+				<p class="total">
+					<span class="label">Subtotal:</span>
+					<span class="price">$0.00</span>
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col main-content">
+				<script>
+					var isEmptyCart = true; // Expose variables to JS to disable the checkout button
+				</script>
+
+				<div id="emptyStateContainer">
+
+					<div class="panel">
+						<div class="row panel-title rule padt30 padb20">
+							<h3>Your shopping cart is empty</h3>
+						</div>
+						<div class="row padt60 padb60">
+							<p class="center">Your shopping cart is empty</p>
+						</div>
+					</div>
+
+				</div>
+				
+				<div id="devicesContainer" class="panel devices"></div>
+
+				<div id="companionProductsContainer"></div>
+
+				<div class="row panel gray-light checkout-bottom tablet-mobile-only">
+
+					<div class="row rule promo-code padt20 padb20 marb10">
+						<div class="input text search coupon-submit" data-product-count="" data-couponid="">
+
+							<input type="text" name="coupon" maxlength="" value="" placeholder="Enter Promo Code">	
+
+							<button class="addCouponBtn">Go</button>
+						</div>
+						<div class="couponErrorMsg">
+							<ul class="error">
+								<li class="warning box hidden conflictAddress">
+									<p>
+										At this time, for orders placed with a test-drive promo code, your shipping and billing address must be the same.
+									</p>
+									<p>
+										<a href="/us/shipping-edit">Edit Shipping address</a>
+									</p>
+									<p>and enter promo code again.</p>
+								</li>
+								<li class="warning box hidden conflictPayment">
+									<p>
+										Your credit card information is required for orders placed with this promo code.
+									</p>
+									<p>
+										<a id="tdPayment" href="/us/payment">Edit your payment information</a>
+										and enter promo code again.
+									</p>
+								</li>
+								<li class="warning box hidden conflictCart">
+
+									<p>
+										This promo code can only apply to one phone. Please remove the other phones from your cart and enter promo code again.
+									</p>
+
+								</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="price total">
+
+							<h3>
+								Subtotal:
+								<span class="subtotal">$0.00</span>
+							</h3>
+							<p class="note">* Taxes and shipping charges may apply</p>
+
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="button white-3 continue-button desktop-tablet-only">
+							<input id="bottomContinueShoppingBtn" type="submit" class="submit" value="Continue shopping"></div>
+
+						<div class="button blue-1 large checkout-button">
+							<input type="submit" class="submit" value="Checkout"></div>
+
+					</div>
+				</div>
+
+				<div class="mobile-only checkout-bottom-buttons">
+					<a class="button white-2 full continue-shopping-button" href="http://www.motorola.com/us/storefront"> <b>Continue shopping</b>
+						<span>Find more great products</span>
+					</a>
+					<a class="button white-2 full chat"> <b>Live Help and Support</b>
+						<span>Chat with a support specialist to get help</span>
+					</a>
+				</div>
+
+			</div>
+			<!-- /.main-content -->	
+
+			<div class="col right-rail desktop-only">
+
+				<div class="cart-summary default" id="summaryContainer">
+					<div class="row panel round-top dark">
+						<h4 class="rule padt20 padb20">Cart Summary</h4>
+						<div class="row subtotal rule padt10 padb10">
+
+							<p class="item-count">0 Items</p>
+
+							<p class="label">Subtotal</p>
+							<p class="price">$0.00</p>
+
+						</div>
+
+						<div class="row total padt10 padb10">
+
+							<p class="label">Subtotal</p>
+							<p class="price">$0.00*</p>
+
+							<p></p>
+
+							<p class="note">* Taxes and shipping charges may apply</p>
+
+							<p class="financing-total  hidden">
+								<span class="capitalize">due today</span>
+								<span class="financing-total-no">$0.00*</span>
+							</p>
+
+						</div>
+						<div class="row buttons padt10 padb20" style="left: 0px; position: relative; top: 0px;">
+
+							<div class="button blue-1 medium full disabled optimizelyred-1">
+								<input type="submit" class="submit" value="Checkout" disabled="true"></div>
+
+						</div>
+
+						<div class="row rule promo-code padt20 padb20 marb10">
+							<div class="input text search coupon-submit" data-product-count="
+	           
+	       " data-couponid="
+	           
+           ">
+
+								<input type="text" name="coupon" maxlength="" value="" placeholder="Enter Promo Code">	
+
+								<button class="addCouponBtn">Go</button>
+							</div>
+							<div class="couponErrorMsg">
+								<ul class="error">
+									<li class="warning box hidden conflictAddress">
+										<p>
+											At this time, for orders placed with a test-drive promo code, your shipping and billing address must be the same.
+										</p>
+										<p>
+											<a href="/us/shipping-edit">Edit Shipping address</a>
+										</p>
+										<p>and enter promo code again.</p>
+									</li>
+									<li class="warning box hidden conflictPayment">
+										<p>
+											Your credit card information is required for orders placed with this promo code.
+										</p>
+										<p>
+											<a id="tdPayment" href="/us/payment">Edit your payment information</a>
+											and enter promo code again.
+										</p>
+									</li>
+									<li class="warning box hidden conflictCart">
+
+										<p>
+											This promo code can only apply to one phone. Please remove the other phones from your cart and enter promo code again.
+										</p>
+
+									</li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="panel round-bottom gray-dark support">
+						<div class="row padt20 padb20">
+							<h5>
+								<a href="http://www.motorola.com/us/storefront">Continue shopping</a>
+							</h5>
+							<p>
+								<a class="notchat" href="http://www.motorola.com/us/storefront">Find more great products</a>
+							</p>
+						</div>
+						<div class="row padt20 padb20">
+
+							<div class="contentasset">
+								<!-- dwMarker="content" dwContentID="bcZeUiaag0h9AaaadcoP7pn94S" -->	
+								<h5>
+									<a href="https://motorola-global-portal.custhelp.com/app/chat/mm_chat_launch" target="_blank">Get help</a>
+								</h5>
+								<p>
+									<a href="https://motorola-global-portal.custhelp.com/app/chat/mm_chat_launch" target="_blank" class="chat">Access FAQ and live chat</a>
+								</p>
+							</div>
+							<!-- End contentasset -->	
+
+						</div>
+					</div>
+
+					<div class="contentasset">
+						<!-- dwMarker="content" dwContentID="bcPwYiaag0fNQaaaddarRdi6Zb" -->	
+						<div class="panel motocard padt20">
+							<div class="row padt20 padb20">
+								<div class="center">
+									<img src="https://www.motorola.com/on/demandware.static/Sites-Motorola_US-Site/Sites-Motorola_US-Library/en_US/v1419638293098/Finance/Cart/emsign-banner-plug2.png" style="vertical-align: middle; padding-bottom: 5px; width: 50%;"></div>
+
+								<div class="center">
+									<h3 class="center" style="color:#5789EB; font-size:20px; text-align:center;">Use Motorola Credit</h3>
+
+									<p>
+										$0 down, special financing <sup>1</sup>
+										, no annual fee <sup>2</sup>
+										, and much more.
+									</p>
+
+									<div class="center">
+										<a class="center button blue-1 small add-to-cart" href="https://www.motorola.com/us/instantcredit">
+											<span>Apply Today</span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End contentasset -->	
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="overlay" class="overlay" style="display:none; opacity: 0.5;"></div>
+	<div id="cart-edit" style="display:none;" class="modal"></div>
+	<div id="cart-remove" style="display:none;" class="modal"></div>
+	<div class="modal warranty-modal" id="learnMore" style="display:none;width: 620px;position:static;margin:0;">
+		<form class="validate" action="">
+			<div class="container border-bottom">
+				<div class="close"></div>
+				<div class="title padb20">
+					<h5>Moto Care Accident Protection</h5>
+				</div>
+				<div class="row">
+					<div class="image left">
+						<img src="img/MOT_motocare.png" alt="name"></div>
+					<div class="content right">
+						<p></p>
+
+						<p>$39.99 -</p>
+						<h4>Moto Care Accident Protection</h4>
+
+						<p> <strong>2 years of accidental damage and extended mechanical coverage –</strong> 
+							Up to three claims for drops, spills, broken screens and mechanical failures beginning the day your phone ships.
+						</p>
+
+						<p> <strong>No shipping costs or hidden fees –</strong>
+							Just a $39 deductible per claim.
+						</p>
+
+						<p>
+							<strong>Never go without your phone –</strong>
+							We’ll send a just-like-new phone even before you ship us your damaged phone.
+						</p>
+
+						<p>
+							<a href="https://www.motorola.com/us/About_Motorola-Legal-Extended-Warranty-terms/About_Motorola-Legal-Extended-Warranty-terms.html" target="_blank">Read Accident Protection Terms &amp; Conditions</a>
+						</p>
+
+						<p>
+							<span style="font-size: xx-small;">
+								Currently available in the continental US, Alaska, and Hawaii. Purchases in other locations may be cancelled.
+							</span>
+						</p>
+						<p></p>
+						<input type="hidden" id="bcBiUiaai8otYaaadiEChPdxqR-(SVC-SC-00015)" name="pid" value="(SVC-SC-00015)">	
+
+						<input name="warrantyParentUUID" value="bcBiUiaai8otYaaadiEChPdxqR" type="hidden">	
+						<input name="warrantyParentID" value="00503NARTL" type="hidden"></div>
+				</div>
+			</div>
+			<div class="container gray">
+				<div class="row warranty-signin">
+
+					<p class="padb10">
+						Google Sign-in is required to buy Moto Care Accident Protection
+					</p>
+					<div class="button blue-1 small">
+						<input type="submit" class="submit" name="" value="Sign in to Add to Cart"></div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
